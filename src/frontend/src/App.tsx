@@ -1,0 +1,594 @@
+import { ImageManifest } from "@/components/ImageManifest";
+import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/context/AuthContext";
+import { LanguageProvider } from "@/hooks/useLanguage";
+import AdCampaignDetailPage from "@/pages/AdCampaignDetailPage";
+import AdminPage from "@/pages/AdminPage";
+import AdsPage from "@/pages/AdsPage";
+import AnalyticsDashboardPage from "@/pages/AnalyticsDashboardPage";
+import AuntyOnboardingPage from "@/pages/AuntyOnboardingPage";
+import AuntyProfilePage from "@/pages/AuntyProfilePage";
+import AuntyRegistryPage from "@/pages/AuntyRegistryPage";
+import BatchResolutionPage from "@/pages/BatchResolutionPage";
+import BecomeAnAuntyPage from "@/pages/BecomeAnAuntyPage";
+import BiharAuntyPage from "@/pages/BiharAuntyPage";
+import BiharProductPage from "@/pages/BiharProductPage";
+import BiharStatePage from "@/pages/BiharStatePage";
+import BiharVariantPage from "@/pages/BiharVariantPage";
+import BlogPage from "@/pages/BlogPage";
+import BlogPostPage from "@/pages/BlogPostPage";
+import BrandIntelligencePage from "@/pages/BrandIntelligencePage";
+import CommissionEnginePage from "@/pages/CommissionEnginePage";
+import ComplianceEnginePage from "@/pages/ComplianceEnginePage";
+import CorporateOrdersPage from "@/pages/CorporateOrdersPage";
+import CustomerProfilePage from "@/pages/CustomerProfilePage";
+import FoodSafetyPage from "@/pages/FoodSafetyPage";
+import FraudIntelligencePage from "@/pages/FraudIntelligencePage";
+import GiftHampersPage from "@/pages/GiftHampersPage";
+import GrowthEnginePage from "@/pages/GrowthEnginePage";
+import HomePage from "@/pages/HomePage";
+import HowToOrderPage from "@/pages/HowToOrderPage";
+import ImpactDashboardPage from "@/pages/ImpactDashboardPage";
+import IntelligenceHubPage from "@/pages/IntelligenceHubPage";
+import InvestorMISPage from "@/pages/InvestorMISPage";
+import LearningCentrePage from "@/pages/LearningCentrePage";
+import LoginPage from "@/pages/LoginPage";
+import LogisticsEnginePage from "@/pages/LogisticsEnginePage";
+import MakerDashboardPage from "@/pages/MakerDashboardPage";
+import MakerDetailPage from "@/pages/MakerDetailPage";
+import MakerProfilePage from "@/pages/MakerProfilePage";
+import MakersPage from "@/pages/MakersPage";
+import MarketingHubPage from "@/pages/MarketingHubPage";
+import MediaOptimiser from "@/pages/MediaOptimiser";
+import MyProfilePage from "@/pages/MyProfilePage";
+import OrderTrackerPage from "@/pages/OrderTrackerPage";
+import PaymentEnginePage from "@/pages/PaymentEnginePage";
+import PayoutManagerPage from "@/pages/PayoutManagerPage";
+import PlatformDashboardPage from "@/pages/PlatformDashboardPage";
+import PlatformHealthPage from "@/pages/PlatformHealthPage";
+import PlatformSummaryPage from "@/pages/PlatformSummaryPage";
+import PressPage from "@/pages/PressPage";
+import PricingIntelligencePage from "@/pages/PricingIntelligencePage";
+import ProductDetailPage from "@/pages/ProductDetailPage";
+import QaChecklistPage from "@/pages/QaChecklistPage";
+import ReportsHubPage from "@/pages/ReportsHubPage";
+import ShopPage from "@/pages/ShopPage";
+import SmsGatewayPage from "@/pages/SmsGatewayPage";
+import StoryPage from "@/pages/StoryPage";
+import SupportHubPage from "@/pages/SupportHubPage";
+import WalletEnginePage from "@/pages/WalletEnginePage";
+import CrmAnalyticsPage from "@/pages/crm/CrmAnalyticsPage";
+import CrmCampaignsPage from "@/pages/crm/CrmCampaignsPage";
+import CrmCustomersPage from "@/pages/crm/CrmCustomersPage";
+import CrmPage from "@/pages/crm/CrmPage";
+import CrmSettingsPage from "@/pages/crm/CrmSettingsPage";
+import {
+  Outlet,
+  RouterProvider,
+  createRootRoute,
+  createRoute,
+  createRouter,
+} from "@tanstack/react-router";
+import { motion } from "motion/react";
+
+// ============================================
+// ROOT LAYOUT
+// ============================================
+
+function RootLayout() {
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
+      <ImageManifest />
+      <Navbar />
+      <div className="flex-1">
+        <Outlet />
+      </div>
+      <Footer />
+      <Toaster richColors position="top-right" />
+    </div>
+  );
+}
+
+// ============================================
+// NOT FOUND PAGE
+// ============================================
+
+function NotFoundPage() {
+  return (
+    <main className="min-h-screen pt-16 flex items-center justify-center mesh-bg">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center px-4"
+      >
+        <div className="text-6xl mb-4">🍯</div>
+        <h1 className="font-display text-4xl font-bold text-foreground mb-3">
+          Page Not Found
+        </h1>
+        <p className="text-muted-foreground font-body mb-6">
+          Looks like this page went missing like the last bit of achar in the
+          jar.
+        </p>
+        <a
+          href="/"
+          className="inline-flex items-center gap-2 bg-saffron hover:bg-terracotta text-cream font-semibold px-6 py-3 rounded-full font-body transition-colors"
+        >
+          Back to Home
+        </a>
+      </motion.div>
+    </main>
+  );
+}
+
+// ============================================
+// ROUTES
+// ============================================
+
+const rootRoute = createRootRoute({
+  component: RootLayout,
+  notFoundComponent: NotFoundPage,
+});
+
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/",
+  component: HomePage,
+});
+
+const storyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/story",
+  component: StoryPage,
+});
+
+const shopRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/shop",
+  validateSearch: (search: Record<string, unknown>): { state?: string } => ({
+    state: typeof search.state === "string" ? search.state : undefined,
+  }),
+  component: ShopPage,
+});
+
+const productRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/product/$id",
+  component: ProductDetailPage,
+});
+
+const makersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/makers",
+  component: MakersPage,
+});
+
+const makerDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/maker/$id",
+  component: MakerDetailPage,
+});
+
+const howToOrderRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/how-to-order",
+  component: HowToOrderPage,
+});
+
+const adminRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin",
+  component: AdminPage,
+});
+
+const orderTrackerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/order-tracker",
+  component: OrderTrackerPage,
+});
+
+const giftHampersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/gift-hampers",
+  component: GiftHampersPage,
+});
+
+const corporateOrdersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/corporate-orders",
+  component: CorporateOrdersPage,
+});
+
+const pressRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/press",
+  component: PressPage,
+});
+
+const blogRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/blog",
+  component: BlogPage,
+});
+
+const blogPostRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/blog/$slug",
+  component: BlogPostPage,
+});
+
+const becomeAnAuntyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/become-an-aunty",
+  component: BecomeAnAuntyPage,
+});
+
+const customerProfileRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/customer-profile",
+  component: CustomerProfilePage,
+});
+
+const myProfileRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/my-profile",
+  component: MyProfilePage,
+});
+
+const loginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/login",
+  component: LoginPage,
+});
+
+const makerProfileRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/maker-profile",
+  validateSearch: (search: Record<string, unknown>): { makerId?: string } => ({
+    makerId: typeof search.makerId === "string" ? search.makerId : undefined,
+  }),
+  component: MakerProfilePage,
+});
+
+const makerDashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/maker-dashboard",
+  component: MakerDashboardPage,
+});
+
+const platformDashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/platform-dashboard",
+  component: PlatformDashboardPage,
+});
+
+const analyticsDashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/analytics",
+  component: AnalyticsDashboardPage,
+});
+
+const batchResolutionRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/batch-resolution",
+  component: BatchResolutionPage,
+});
+
+const intelligenceRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/intelligence",
+  component: IntelligenceHubPage,
+});
+
+const brandIntelligenceRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/brand-intelligence",
+  component: BrandIntelligencePage,
+});
+
+const fraudIntelligenceRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/fraud-intelligence",
+  component: FraudIntelligencePage,
+});
+
+const pricingIntelligenceRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/pricing-intelligence",
+  component: PricingIntelligencePage,
+});
+
+// ── Ads Routes ──────────────────────────────────────────────────────────────
+
+const adsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/ads",
+  component: AdsPage,
+});
+
+const adCampaignDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/ads/$id",
+  component: AdCampaignDetailPage,
+});
+
+// ── CRM Routes ──────────────────────────────────────────────────────────────
+
+const crmRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/crm",
+  component: CrmPage,
+});
+
+const crmCustomersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/crm/customers",
+  component: CrmCustomersPage,
+});
+
+const crmCampaignsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/crm/campaigns",
+  component: CrmCampaignsPage,
+});
+
+const crmAnalyticsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/crm/analytics",
+  component: CrmAnalyticsPage,
+});
+
+const crmSettingsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/crm/settings",
+  component: CrmSettingsPage,
+});
+
+// ── Aunty Onboarding Routes ──────────────────────────────────────────
+
+const auntyOnboardingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/aunty-onboarding",
+  component: AuntyOnboardingPage,
+});
+
+const auntyRegistryRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/aunty-registry",
+  component: AuntyRegistryPage,
+});
+
+const auntyProfileRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/aunty-profile/$id",
+  component: AuntyProfilePage,
+});
+
+// ── Bihar Marketplace Routes ─────────────────────────────────────────────────
+
+const biharStateRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/state/bihar",
+  component: BiharStatePage,
+});
+
+const biharProductRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/bihar-product/$productId",
+  component: BiharProductPage,
+});
+
+const biharVariantRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/bihar-variant/$variantId",
+  component: BiharVariantPage,
+});
+
+const platformSummaryRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/platform-summary",
+  component: PlatformSummaryPage,
+});
+
+const paymentEngineRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/payment-engine",
+  component: PaymentEnginePage,
+});
+
+const commissionEngineRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/commission-engine",
+  component: CommissionEnginePage,
+});
+
+const payoutManagerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/payout-manager",
+  component: PayoutManagerPage,
+});
+
+const walletEngineRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/wallet-engine",
+  component: WalletEnginePage,
+});
+
+const logisticsEngineRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/logistics-engine",
+  component: LogisticsEnginePage,
+});
+
+const growthEngineRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/growth-engine",
+  component: GrowthEnginePage,
+});
+
+const complianceEngineRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/compliance-engine",
+  component: ComplianceEnginePage,
+});
+
+const biharAuntyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/bihar-aunty/$auntyId",
+  component: BiharAuntyPage,
+});
+
+const supportHubRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/support-hub",
+  component: SupportHubPage,
+});
+
+const marketingHubRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/marketing-hub",
+  component: MarketingHubPage,
+});
+
+const mediaOptimiserRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/media-optimiser",
+  component: MediaOptimiser,
+});
+
+const reportsHubRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/reports",
+  component: ReportsHubPage,
+});
+
+// ============================================
+// ROUTER
+// ============================================
+const foodSafetyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/food-safety",
+  component: FoodSafetyPage,
+});
+
+const smsGatewayRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/sms-gateway",
+  component: SmsGatewayPage,
+});
+
+const platformHealthRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/platform-health",
+  component: PlatformHealthPage,
+});
+
+const qaChecklistRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/qa-checklist",
+  component: QaChecklistPage,
+});
+
+const investorMisRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/investor-mis",
+  component: InvestorMISPage,
+});
+
+const learningCentreRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/learning-centre",
+  component: LearningCentrePage,
+});
+
+const impactDashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/impact",
+  component: ImpactDashboardPage,
+});
+
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  storyRoute,
+  shopRoute,
+  productRoute,
+  makersRoute,
+  makerDetailRoute,
+  howToOrderRoute,
+  adminRoute,
+  orderTrackerRoute,
+  giftHampersRoute,
+  corporateOrdersRoute,
+  pressRoute,
+  blogRoute,
+  blogPostRoute,
+  becomeAnAuntyRoute,
+  customerProfileRoute,
+  myProfileRoute,
+  loginRoute,
+  makerProfileRoute,
+  makerDashboardRoute,
+  platformDashboardRoute,
+  analyticsDashboardRoute,
+  batchResolutionRoute,
+  intelligenceRoute,
+  brandIntelligenceRoute,
+  fraudIntelligenceRoute,
+  pricingIntelligenceRoute,
+  adsRoute,
+  adCampaignDetailRoute,
+  crmRoute,
+  crmCustomersRoute,
+  crmCampaignsRoute,
+  crmAnalyticsRoute,
+  crmSettingsRoute,
+  auntyOnboardingRoute,
+  auntyRegistryRoute,
+  auntyProfileRoute,
+  biharStateRoute,
+  biharProductRoute,
+  biharVariantRoute,
+  biharAuntyRoute,
+  platformSummaryRoute,
+  commissionEngineRoute,
+  paymentEngineRoute,
+  payoutManagerRoute,
+  walletEngineRoute,
+  growthEngineRoute,
+  logisticsEngineRoute,
+  complianceEngineRoute,
+  supportHubRoute,
+  marketingHubRoute,
+  reportsHubRoute,
+  mediaOptimiserRoute,
+  foodSafetyRoute,
+  smsGatewayRoute,
+  platformHealthRoute,
+  qaChecklistRoute,
+  investorMisRoute,
+  learningCentreRoute,
+  impactDashboardRoute,
+]);
+
+const router = createRouter({
+  routeTree,
+  defaultPreload: "intent",
+  defaultPreloadStaleTime: 0,
+});
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </LanguageProvider>
+  );
+}
